@@ -1,5 +1,33 @@
+# frozen_string_literal: true
+
 class StringCalculator
   def add(numbers)
-    0 if numbers.empty?
+    return 0 if numbers.empty?
+
+    delimiter, numbers_string = extract_delimiter_and_numbers(numbers)
+    number_array = numbers_string.split(delimiter).map(&:to_i)
+
+    validate_no_negative_numbers(number_array)
+
+    number_array.sum
+  end
+
+  private
+
+  def extract_delimiter_and_numbers(input)
+    if input.start_with?('//')
+      delimiter_line, numbers_string = input.split("\n", 2)
+      delimiter = Regexp.escape(delimiter_line[2])
+      [/[,\n#{delimiter}]/, numbers_string]
+    else
+      [/[,\n]/, input]
+    end
+  end
+
+  def validate_no_negative_numbers(numbers)
+    negatives = numbers.select(&:negative?)
+    return if negatives.empty?
+
+    raise "negative numbers not allowed #{negatives.join(',')}"
   end
 end
