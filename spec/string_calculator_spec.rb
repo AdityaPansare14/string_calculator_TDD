@@ -13,7 +13,6 @@ RSpec.describe StringCalculator do
 
     context 'when single number is passed' do
       it 'returns the number itself' do
-        # This test is expected to fail as we yet to handle this case
         expect(StringCalculator.new.add('1')).to eq(1)
       end
     end
