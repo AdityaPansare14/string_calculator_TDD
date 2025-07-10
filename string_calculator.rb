@@ -5,7 +5,11 @@ class StringCalculator
     return 0 if numbers.empty?
 
     delimiter, numbers_string = extract_delimiter_and_numbers(numbers)
-    numbers_string.split(delimiter).map(&:to_i).sum
+    number_array = numbers_string.split(delimiter).map(&:to_i)
+
+    validate_no_negative_numbers(number_array)
+
+    number_array.sum
   end
 
   private
@@ -18,5 +22,12 @@ class StringCalculator
     else
       [/[,\n]/, input]
     end
+  end
+
+  def validate_no_negative_numbers(numbers)
+    negatives = numbers.select(&:negative?)
+    return if negatives.empty?
+
+    raise "negative numbers not allowed #{negatives.join(',')}"
   end
 end
